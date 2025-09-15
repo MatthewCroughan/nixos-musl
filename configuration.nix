@@ -55,6 +55,7 @@
     glibcLocales = glibcPkgs.glibcLocales;
     go-md2man = glibcPkgs.go-md2man;
     systemdUkify = glibcPkgs.systemdUkify;
+    util-linux = super.util-linux.override { systemdSupport = false; };
 #    erofs-utils = super.erofs-utils.overrideAttrs {
 #      NIX_CFLAGS_COMPILE = "-D_LARGEFILE64_SOURCE";
 #    };
