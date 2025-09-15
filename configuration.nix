@@ -57,7 +57,7 @@
 #    glibcLocales = glibcPkgs.glibcLocales;
     netbsd = super.netbsd.overrideScope (
       _final: prev: {
-        compat = prev.compat.override.defaultMakeFlags;
+        compat = prev.compat.overrideAttrs (old: { makeFlags = old.makeFlags ++ [ "OBJCOPY=${super.binutils}/bin/strip" ]; });
       }
     );
     go-md2man = glibcPkgs.go-md2man;
