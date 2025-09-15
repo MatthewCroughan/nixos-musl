@@ -79,7 +79,7 @@
         ./move-mount-beneath-musl.patch
       ];
     });
-    libcap = super.libcap.override { usePam = true; };
+    libcap = super.libcap.override { withGo = false; };
     coreutils-full = self.coreutils;
     dbus = super.dbus.override {
       x11Support = false;
