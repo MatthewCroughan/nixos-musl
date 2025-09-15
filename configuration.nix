@@ -53,7 +53,7 @@
   in [(self: super: {
 #    pandoc = glibcPkgs.pandoc;
 #    glibcLocales = glibcPkgs.glibcLocales;
-#    go-md2man = glibcPkgs.go-md2man;
+    go-md2man = glibcPkgs.go-md2man;
     systemdUkify = glibcPkgs.systemdUkify;
     util-linux = super.util-linux.override {
       systemdSupport = false;
