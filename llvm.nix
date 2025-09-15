@@ -9,7 +9,7 @@
 #    linker = "lld";
 #  };
 
-  nixpkgs.buildPlatform = (lib.systems.elaborate "aarch64-unknown-linux-gnu");
+  nixpkgs.buildPlatform = (lib.systems.elaborate "aarch64-unknown-linux-musl");
   nixpkgs.hostPlatform = lib.recursiveUpdate (lib.systems.elaborate "aarch64-unknown-linux-musl") {
     useLLVM = true;
     linker = "lld";
