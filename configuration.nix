@@ -53,7 +53,7 @@
   nixpkgs.overlays = let
     glibcPkgs = (import pkgs.path { system = pkgs.hostPlatform.system; });
   in [(self: super: {
-    glibc = super.glibc.overrideAttrs (old: { NIX_CFLAGS_COMPILE = old.env.NIX_CFLAGS_COMPILE + " -Wno-error=attribute-alias"; });
+    glibc = super.glibc.overrideAttrs (old: { env.NIX_CFLAGS_COMPILE = old.env.NIX_CFLAGS_COMPILE + " -Wno-error=attribute-alias"; });
 #    pandoc = glibcPkgs.pandoc;
 #    glibcLocales = glibcPkgs.glibcLocales;
     go-md2man = glibcPkgs.go-md2man;
