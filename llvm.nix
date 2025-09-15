@@ -1,18 +1,28 @@
+{ pkgs, lib, ... }:
 {
-  nixpkgs.localSystem = {
-    system = "aarch64-unknown-linux-gnu";
-  };
-  nixpkgs.crossSystem = {
-    config = "aarch64-unknown-linux-musl";
+#  nixpkgs.localSystem = {
+#    system = "aarch64-unknown-linux-gnu";
+#  };
+#  nixpkgs.crossSystem = {
+#    config = "aarch64-unknown-linux-musl";
+#    useLLVM = true;
+#    linker = "lld";
+#    gcc = {
+#      # https://openwrt.org/docs/techref/instructionset/aarch64_cortex-a53
+#      # openwrt ./target/linux/mediatek/filogic/target.mk
+#      # https://gcc.gnu.org/onlinedocs/gcc/AArch64-Options.html
+#      # https://en.wikipedia.org/wiki/Comparison_of_ARM_processors
+#      arch = "armv8-a";
+#    };
+#  };
+
+  nixpkgs.buildPlatform = "aarch64-unknown-linux-musl";
+  nixpkgs.hostPlatform = lib.recursiveUpdate (lib.systems.elaborate "aarch64-linux") {
     useLLVM = true;
     linker = "lld";
-    gcc = {
-      # https://openwrt.org/docs/techref/instructionset/aarch64_cortex-a53
-      # openwrt ./target/linux/mediatek/filogic/target.mk
-      # https://gcc.gnu.org/onlinedocs/gcc/AArch64-Options.html
-      # https://en.wikipedia.org/wiki/Comparison_of_ARM_processors
-      arch = "armv8-a";
-    };
+    linux-kernel.target = "vmlinuz.efi";
+    linux-kernel.installTarget = "zinstall";
+    config = "aarch64-unknown-linux-musl";
   };
 
 #  nixpkgs.buildPlatform = "aarch64-unknown-linux-gnu";
