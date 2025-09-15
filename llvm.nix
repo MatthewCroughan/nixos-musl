@@ -1,8 +1,7 @@
 {
-  nixpkgs.localSystem = {
-    system = "aarch64-unknown-linux-gnu";
-
-  };
+#  nixpkgs.localSystem = {
+#    system = "aarch64-unknown-linux-gnu";
+#  };
   nixpkgs.crossSystem = {
     config = "aarch64-unknown-linux-musl";
     useLLVM = true;
