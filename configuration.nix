@@ -46,6 +46,8 @@
 
   environment.systemPackages = lib.mkForce [];
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   boot.enableContainers = false;
 #  systemd.package = pkgs.customSystemd;
   networking.resolvconf.enable = false;
