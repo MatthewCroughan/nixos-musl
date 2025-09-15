@@ -1,0 +1,26 @@
+From ebbcef2401f77da4e27ac644ffe905103d13d416 Mon Sep 17 00:00:00 2001
+From: HPsaucii <me@hpsaucii.dev>
+Date: Wed, 7 Aug 2024 11:44:21 +0100
+Subject: [PATCH] fix musl incompatibility
+
+---
+ move-mount.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/move-mount.c b/move-mount.c
+index 33b728a..1ab7deb 100644
+--- a/move-mount.c
++++ b/move-mount.c
+@@ -13,6 +13,11 @@
+ #include <sys/prctl.h>
+ #include <sys/wait.h>
+ #include <unistd.h>
++#include <stdint.h>
++
++#ifndef __u64
++	#define __u64 uint64_t
++#endif
+ 
+ #ifndef __NR_fsmount
+ 	#if defined __alpha__
+

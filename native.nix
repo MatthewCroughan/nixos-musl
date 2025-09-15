@@ -6,8 +6,8 @@
       name = "aarch64-multiplatform";
       baseConfig = "defconfig";
       DTB = true;
-      extraConfig = "";
-      autoModules = false;
+#      extraConfig = "";
+      autoModules = true;
       preferBuiltin = true;
       target = "vmlinuz.efi";
       installTarget = "zinstall";
