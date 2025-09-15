@@ -10,7 +10,7 @@
       baseConfig = "defconfig";
       DTB = true;
       extraConfig = "";
-      autoModules = false;
+      autoModules = true;
       preferBuiltin = true;
       target = "vmlinuz.efi";
       installTarget = "zinstall";
