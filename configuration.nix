@@ -51,28 +51,32 @@
   nixpkgs.overlays = let
     glibcPkgs = (import pkgs.path { system = pkgs.hostPlatform.system; });
   in [(self: super: {
-    pandoc = glibcPkgs.pandoc;
-    glibcLocales = glibcPkgs.glibcLocales;
-    go-md2man = glibcPkgs.go-md2man;
+#    pandoc = glibcPkgs.pandoc;
+#    glibcLocales = glibcPkgs.glibcLocales;
+#    go-md2man = glibcPkgs.go-md2man;
     systemdUkify = glibcPkgs.systemdUkify;
-    util-linux = super.util-linux.override { systemdSupport = false; };
-    unixtools = super.unixtools // {
-      bins.getent = {
-        linux = null;
-      };
+    util-linux = super.util-linux.override {
+      systemdSupport = false;
+      cryptsetupSupport = false;
+      nlsSupport = false;
+      ncursesSupport = false;
     };
-#    erofs-utils = super.erofs-utils.overrideAttrs {
-#      NIX_CFLAGS_COMPILE = "-D_LARGEFILE64_SOURCE";
-#    };
+    erofs-utils = super.erofs-utils.overrideAttrs {
+      NIX_CFLAGS_COMPILE = "-D_LARGEFILE64_SOURCE";
+    };
     move-mount-beneath = super.move-mount-beneath.overrideAttrs (old: {
       patches = old.patches ++ [
         ./move-mount-beneath-musl.patch
       ];
     });
-#    coreutils-full = self.coreutils;
-#    dbus = super.dbus.override {
-#      x11Support = false;
-#    };
+    coreutils-full = self.coreutils;
+    dbus = super.dbus.override {
+      x11Support = false;
+    };
+    wireplumber = super.wireplumber.override {
+      enableGI = false;
+    };
+#    systemd = self.customSystemd;
     systemd = super.systemd.override {
       withAcl = false;
       withAnalyze = true;
@@ -115,11 +119,11 @@
       withLogind = true;
       withQrencode = false;
       withUkify = false;
-      withEfi = false;
-      withCryptsetup = false;
-      withRepart = false;
+      withEfi = true;
+      withCryptsetup = true;
+      withRepart = true;
       withSysupdate = false;
-      withOpenSSL = true;
+      withOpenSSL = false;
       withBootloader = false;
     };
     })
