@@ -1,17 +1,27 @@
 {
-  nixpkgs.hostPlatform = {
-    system = "aarch64-linux";
+  nixpkgs.crossSystem = {
     config = "aarch64-unknown-linux-musl";
-    linux-kernel = {
-      name = "aarch64-multiplatform";
-      baseConfig = "defconfig";
-      DTB = true;
-#      extraConfig = "";
-      autoModules = true;
-      preferBuiltin = true;
-      target = "vmlinuz.efi";
-      installTarget = "zinstall";
+    gcc = {
+      # https://openwrt.org/docs/techref/instructionset/aarch64_cortex-a53
+      # openwrt ./target/linux/mediatek/filogic/target.mk
+      # https://gcc.gnu.org/onlinedocs/gcc/AArch64-Options.html
+      # https://en.wikipedia.org/wiki/Comparison_of_ARM_processors
+      arch = "armv8-a";
     };
   };
+#  nixpkgs.hostPlatform = {
+#    system = "aarch64-linux";
+#    config = "aarch64-unknown-linux-musl";
+#    linux-kernel = {
+#      name = "aarch64-multiplatform";
+#      baseConfig = "defconfig";
+#      DTB = true;
+##      extraConfig = "";
+#      autoModules = true;
+#      preferBuiltin = true;
+#      target = "vmlinuz.efi";
+#      installTarget = "zinstall";
+#    };
+#  };
 }
 
