@@ -55,6 +55,9 @@
   in [(self: super: {
 #    pandoc = glibcPkgs.pandoc;
 #    glibcLocales = glibcPkgs.glibcLocales;
+    netbsd = super.netbsd // {
+      compat = super.netbsd.compat.overrideAttrs (old: { makeFlags = old.makeFlags ++ [ "OBJCOPY=${super.binutils}/bin/strip" ]; });
+    };
     go-md2man = glibcPkgs.go-md2man;
     systemdUkify = glibcPkgs.systemdUkify;
     util-linux = super.util-linux.override {
