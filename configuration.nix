@@ -10,7 +10,7 @@
   fileSystems."/boot".device = "/dev/disk/by-label/ESP";
   fileSystems."/boot".fsType = "vfat";
 
-#  i18n.glibcLocales = pkgs.runCommandNoCC "neutered" {} "mkdir -p $out";
+  i18n.glibcLocales = pkgs.runCommandNoCC "neutered" {} "mkdir -p $out";
 
 #########
 
