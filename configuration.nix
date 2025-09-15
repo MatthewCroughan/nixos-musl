@@ -62,6 +62,7 @@
         compat = prev.compat.overrideAttrs (old: { makeFlags = old.makeFlags ++ [ "OBJCOPY=${self.binutils}/bin/strip" ]; });
       }
     );
+
     go-md2man = glibcPkgs.go-md2man;
     systemdUkify = glibcPkgs.systemdUkify;
     util-linux = super.util-linux.override {
@@ -78,6 +79,7 @@
         ./move-mount-beneath-musl.patch
       ];
     });
+    libcap = super.libcap.override { usePam = true; };
     coreutils-full = self.coreutils;
     dbus = super.dbus.override {
       x11Support = false;
