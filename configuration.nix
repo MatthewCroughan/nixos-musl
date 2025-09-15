@@ -12,6 +12,8 @@
 
   i18n.glibcLocales = pkgs.runCommandNoCC "neutered" {} "mkdir -p $out";
 
+  systemd.tmpfiles.packages = lib.mkForce [];
+
 #########
 
   networking.dhcpcd.enable = false;
