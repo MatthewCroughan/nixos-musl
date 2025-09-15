@@ -109,8 +109,8 @@
       withLogind = true;
       withQrencode = false;
       withUkify = false;
-      withEfi = true;
-      withCryptsetup = true;
+      withEfi = false;
+      withCryptsetup = false;
       withRepart = true;
       withSysupdate = false;
       withOpenSSL = true;
