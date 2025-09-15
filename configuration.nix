@@ -59,7 +59,7 @@
 #    glibcLocales = glibcPkgs.glibcLocales;
     netbsd = super.netbsd.overrideScope (
       _final: prev: {
-        compat = prev.compat.overrideAttrs (old: { makeFlags = old.makeFlags ++ [ "OBJCOPY=${self.binutils}/bin/strip" ]; });
+        compat = prev.compat.overrideAttrs (old: { makeFlags = old.makeFlags ++ [ "OBJCOPY=${glibcPkgs.binutils}/bin/strip" ]; });
       }
     );
 
