@@ -79,6 +79,9 @@
         ./move-mount-beneath-musl.patch
       ];
     });
+    pam = super.pam.overrideAttrs {
+      NIX_LDFLAGS = lib.optionalString (super.stdenv.cc.bintools.isLLVM && lib.versionAtLeast super.stdenv.cc.bintools.version "17") "--undefined-version";
+    };
     libcap = super.libcap.override { withGo = false; };
     coreutils-full = self.coreutils;
     dbus = super.dbus.override {
