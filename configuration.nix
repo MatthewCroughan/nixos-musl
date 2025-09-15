@@ -112,7 +112,7 @@
       withUkify = false;
       withEfi = false;
       withCryptsetup = false;
-      withRepart = true;
+      withRepart = false;
       withSysupdate = false;
       withOpenSSL = true;
       withBootloader = false;
