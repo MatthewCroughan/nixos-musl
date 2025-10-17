@@ -66,3 +66,15 @@ Nixpkgs and obsoleted my code.
   };
 }
 ```
+
+## Contributing
+
+If you find fixes for musl, or musl+llvm, put them in musl.nix or musl-llvm.nix
+accordingly.
+
+If you notice that a fix/patch is no longer required, and you can make it pass
+CI and VM Testing, then please PR the removal of this and update the Nixpkgs
+input in this flake.
+
+Always contribute hacks/fixes upstream to Nixpkgs, or perhaps upstream software,
+and place a comment linking to your upstreaming attempt.

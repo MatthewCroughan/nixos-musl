@@ -9,7 +9,7 @@
       systems = [ "aarch64-linux" ];
       perSystem = { system, ... }: {
         checks = builtins.mapAttrs (n: v: v.config.system.build.toplevel) self.nixosConfigurations;
-        packages =
+        legacyPackages =
           builtins.listToAttrs (map
             (name: {
               name = "vmtest-${name}";
