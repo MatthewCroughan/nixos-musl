@@ -1,7 +1,7 @@
 { lib, ... }:
 {
-  # Make CI Happy, NixOS wants a rootfs
+  # Make CI Happy, NixOS wants a rootfs defined in order to be able to build toplevel
   fileSystems."/".device = lib.mkDefault "/dev/disk/by-label/nixos";
-  # NixOS won't build unless grub is disabled
+  # the toplevel also won't build unless grub is disabled
   boot.loader.grub.enable = lib.mkDefault false;
 }
