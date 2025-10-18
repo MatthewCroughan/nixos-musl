@@ -8,6 +8,9 @@ in
   ];
   nixpkgs.overlays = [
     (self: super: {
+      # Doesn't build with Valgrind due to https://github.com/NixOS/nixpkgs/pull/329995
+      mesa = super.mesa.override { withValgrind = false; };
+
       # Prevents accidental runtime linkage to llvm bintools
       gnugrep = super.gnugrep.override { runtimeShellPackage = self.runCommandNoCC "neutered" { } "mkdir -p $out"; };
 
