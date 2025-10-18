@@ -8,8 +8,8 @@ in
   services.nscd.enable = false;
   system.nssModules = lib.mkForce [];
 
-  # wrappers use pkgsStatic which has issues on musl at this time
-  security.enableWrappers = false;
+  # wrappers use pkgsStatic which has issues on native musl at this time
+  security.enableWrappers = pkgs.stdenv.buildPlatform.isGnu;
 
   # stub-ld doesn't make sense with musl
   environment.stub-ld.enable = false;
