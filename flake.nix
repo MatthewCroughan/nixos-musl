@@ -1,7 +1,7 @@
 {
   inputs = {
     flake-parts.url = "github:hercules-ci/flake-parts";
-    nixpkgs.url = "github:matthewcroughan/nixpkgs/mc/conditional-glibcsystemdinitrd";
+    nixpkgs.url = "github:nixos/nixpkgs/staging-next";
   };
 
   outputs = inputs@{ flake-parts, self, ... }:

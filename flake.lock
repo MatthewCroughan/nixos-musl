@@ -20,16 +20,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1760747329,
-        "narHash": "sha256-s0Vc6xC5epavvQadpeOkaaqZsbbQeTxHNiMjKWxDEL4=",
-        "owner": "matthewcroughan",
+        "lastModified": 1760962034,
+        "narHash": "sha256-+TRW8WDIQ7OpHKpy6tcsocIlocC108pyo43/4LnwRYQ=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "858860c491bd5448685ace112c0049a0ea051ae2",
+        "rev": "cbc8b5f221eb9c3e19311510407c330f438ea2c9",
         "type": "github"
       },
       "original": {
-        "owner": "matthewcroughan",
-        "ref": "mc/conditional-glibcsystemdinitrd",
+        "owner": "nixos",
+        "ref": "staging-next",
         "repo": "nixpkgs",
         "type": "github"
       }
