@@ -19,10 +19,28 @@ in
 
   # 206/OOM_Adjust crashes for Systemd v258 when using musl
   # https://github.com/systemd/systemd/pull/38825#issuecomment-3391312797
-  systemd.services.systemd-udevd.serviceConfig.OOMScoreAdjust =  "";
-  systemd.services.systemd-journald.serviceConfig.OOMScoreAdjust =  "";
-  boot.initrd.systemd.services.systemd-udevd.serviceConfig.OOMScoreAdjust =  "";
-  boot.initrd.systemd.services.systemd-journald.serviceConfig.OOMScoreAdjust =  "";
+  systemd.units = {
+    "service.d/10-unset-oom-score.conf".text = ''
+      [Service]
+      OOMScoreAdjust=
+    '';
+  };
+  boot.initrd.systemd.units = {
+    "service.d/10-unset-oom-score.conf".text = ''
+      [Service]
+      OOMScoreAdjust=
+    '';
+  };
+  systemd.user.units = {
+    "service.d/10-unset-oom-score.conf".text = ''
+      [Service]
+      OOMScoreAdjust=
+    '';
+    "socket.d/10-unset-oom-score.conf".text = ''
+      [Socket]
+      OOMScoreAdjust=
+    '';
+  };
 
   nixpkgs.overlays = [
     (self: super: {
