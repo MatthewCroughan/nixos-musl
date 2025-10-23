@@ -105,13 +105,6 @@ in
         };
       };
 
-      # time patch can be removed when https://github.com/NixOS/nixpkgs/pull/447166
-      time = super.time.overrideAttrs {
-        patches = [
-          "${super.pkgs.path}/pkgs/by-name/ti/time/time-1.9-implicit-func-decl-clang.patch"
-        ];
-      };
-
       # checks fail on musl
       rsync = super.rsync.overrideAttrs {
         doCheck = false;
