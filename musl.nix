@@ -52,26 +52,6 @@ in
       # But the qemu_test binary is fine on musl
       qemu_test = super.qemu;
 
-      # python3-fb-re2 fails
-      mercurial = super.mercurial.override {
-        re2Support = false;
-      };
-
-      perlPackages = super.perlPackages // {
-        # https://github.com/NixOS/nixpkgs/pull/451665
-        Test2Harness = super.perlPackages.Test2Harness.overrideAttrs (oldAttrs: {
-          doCheck = false;
-        });
-        ## https://github.com/NixOS/nixpkgs/pull/452642
-        #DBI = super.perlPackages.DBI.overrideAttrs (oldAttrs: {
-        #  env = {
-        #    NIX_CFLAGS_COMPILE =
-        #      lib.optionalString super.stdenv.cc.isGNU "-Wno-error=incompatible-pointer-types"
-        #      + lib.optionalString super.stdenv.hostPlatform.isMusl " -Doff64_t=off_t";
-        #   };
-        #});
-      };
-
       # Tests are so flaky...
       git = super.git.overrideAttrs { doInstallCheck = false; };
 
@@ -109,26 +89,6 @@ in
       rsync = super.rsync.overrideAttrs {
         doCheck = false;
       };
-
-      # checks fail on musl
-      texinfoInteractive = super.texinfoInteractive.overrideAttrs {
-        doCheck = false;
-      };
-
-      # https://github.com/NixOS/nixpkgs/pull/446139
-      onetbb = super.onetbb.overrideAttrs (old: {
-        doCheck = false;
-        patches = old.patches ++ [
-          # Fix build with gcc15
-          # <https://github.com/uxlfoundation/oneTBB/pull/1831>
-          # https://github.com/NixOS/nixpkgs/pull/446139
-          (super.fetchpatch {
-            name = "onetbb-fix-gcc15-build.patch";
-            url = "https://github.com/uxlfoundation/oneTBB/commit/712ad98443300aab202f5e93a76472d59b79752a.patch";
-            hash = "sha256-4qoVCy3xQZK6Vp471miE79FSrU0D0Iu6KWMJ08m0EsE=";
-          })
-        ];
-      });
     })
   ];
 
