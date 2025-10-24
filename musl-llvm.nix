@@ -11,7 +11,6 @@ in
       # Prevents accidental runtime linkage to llvm bintools
       gnugrep = super.gnugrep.override { runtimeShellPackage = self.runCommandNoCC "neutered" { } "mkdir -p $out"; };
 
-      dbus = super.dbus.overrideAttrs (old: { configureFlags = old.configureFlags ++ [ "--disable-libaudit" "--disable-apparmor" ]; });
       libcap = super.libcap.override { withGo = false; };
 
       # https://github.com/NixOS/nixpkgs/pull/445833

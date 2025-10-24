@@ -55,17 +55,6 @@ in
       # Tests are so flaky...
       git = super.git.overrideAttrs { doInstallCheck = false; };
 
-      # audit doesn't build on musl yet
-      pam = super.pam.override { withAudit = false; };
-      dbus = super.dbus.overrideAttrs (old: {
-        configureFlags = (lib.remove "--enable-libaudit" old.configureFlags) ++ [
-        ];
-        buildInputs = (lib.remove super.audit old.buildInputs);
-      });
-      systemd = (super.systemd.override {
-        withAudit = false;
-      });
-
       # https://github.com/NixOS/nixpkgs/pull/451147
       diffutils = super.diffutils.overrideAttrs (old: {
         postPatch =
