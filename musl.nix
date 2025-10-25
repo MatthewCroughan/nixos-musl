@@ -53,7 +53,7 @@ in
       qemu_test = super.qemu;
 
       # Tests are so flaky...
-      git = super.git.overrideAttrs { doInstallCheck = false; };
+      git = super.git.overrideAttrs { doInstallCheck = false; doCheck = false; };
 
       # audit doesn't build on musl yet
       pam = super.pam.override { withAudit = false; };
