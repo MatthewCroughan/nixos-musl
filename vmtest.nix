@@ -1,5 +1,5 @@
-{ nixosTest, config }:
-nixosTest {
+{ testers, config }:
+testers.nixosTest {
   name = "musl-vmtest";
   nodes = {
     vm = config;

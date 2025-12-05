@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  glibcPkgs = (import pkgs.path { system = pkgs.hostPlatform.system; });
+  glibcPkgs = (import pkgs.path { system = pkgs.stdenv.hostPlatform.system; });
 in
 {
   imports = [
@@ -8,11 +8,12 @@ in
   ];
   nixpkgs.overlays = [
     (self: super: {
-      # Prevents accidental runtime linkage to llvm bintools
-      gnugrep = super.gnugrep.override { runtimeShellPackage = self.runCommandNoCC "neutered" { } "mkdir -p $out"; };
+      ## Prevents accidental runtime linkage to llvm bintools
+      # gnugrep = super.gnugrep.override { runtimeShellPackage = self.runCommand "neutered" { } "mkdir -p $out"; };
 
-      dbus = super.dbus.overrideAttrs (old: { configureFlags = old.configureFlags ++ [ "--disable-libaudit" "--disable-apparmor" ]; });
-      libcap = super.libcap.override { withGo = false; };
+      coreutils = super.coreutils.overrideAttrs {
+        doCheck = false;
+      };
 
       # https://github.com/NixOS/nixpkgs/pull/445833
       netbsd = super.netbsd.overrideScope (

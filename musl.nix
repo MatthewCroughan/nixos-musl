@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  glibcPkgs = (import pkgs.path { system = pkgs.hostPlatform.system; });
+  glibcPkgs = (import pkgs.path { system = pkgs.stdenv.hostPlatform.system; });
 in
 {
   # Fails to build, and doesn't make sense on musl anyway
@@ -15,32 +15,7 @@ in
   environment.stub-ld.enable = false;
 
   # Fails unless neutered error: expected a set but found null: null
-  i18n.glibcLocales = pkgs.runCommandNoCC "neutered" { } "mkdir -p $out";
-
-  # 206/OOM_Adjust crashes for Systemd v258 when using musl
-  # https://github.com/systemd/systemd/pull/38825#issuecomment-3391312797
-  systemd.units = {
-    "service.d/10-unset-oom-score.conf".text = ''
-      [Service]
-      OOMScoreAdjust=
-    '';
-  };
-  boot.initrd.systemd.units = {
-    "service.d/10-unset-oom-score.conf".text = ''
-      [Service]
-      OOMScoreAdjust=
-    '';
-  };
-  systemd.user.units = {
-    "service.d/10-unset-oom-score.conf".text = ''
-      [Service]
-      OOMScoreAdjust=
-    '';
-    "socket.d/10-unset-oom-score.conf".text = ''
-      [Socket]
-      OOMScoreAdjust=
-    '';
-  };
+  i18n.glibcLocales = pkgs.runCommand "neutered" { } "mkdir -p $out";
 
   nixpkgs.overlays = [
     (self: super: {
@@ -49,22 +24,11 @@ in
       # else
       qemu = glibcPkgs.qemu;
 
-      # But the qemu_test binary is fine on musl
-      qemu_test = super.qemu;
+      ## But the qemu_test binary is fine on musl
+      qemu_test = glibcPkgs.qemu_test;
 
       # Tests are so flaky...
       git = super.git.overrideAttrs { doInstallCheck = false; };
-
-      # audit doesn't build on musl yet
-      pam = super.pam.override { withAudit = false; };
-      dbus = super.dbus.overrideAttrs (old: {
-        configureFlags = (lib.remove "--enable-libaudit" old.configureFlags) ++ [
-        ];
-        buildInputs = (lib.remove super.audit old.buildInputs);
-      });
-      systemd = (super.systemd.override {
-        withAudit = false;
-      });
 
       # https://github.com/NixOS/nixpkgs/pull/451147
       diffutils = super.diffutils.overrideAttrs (old: {
@@ -76,16 +40,10 @@ in
       '' else null;
       });
 
-      # https://github.com/NixOS/nixpkgs/pull/451506
-      python3 = super.python3.override {
-        packageOverrides = pyfinal: pyprev: {
-          pytest = pyprev.pytest.overrideAttrs {
-            dontWrapPythonPrograms = false;
-          };
-        };
-      };
-
       # checks fail on musl
+      logrotate = super.logrotate.overrideAttrs {
+        doCheck = false;
+      };
       rsync = super.rsync.overrideAttrs {
         doCheck = false;
       };
