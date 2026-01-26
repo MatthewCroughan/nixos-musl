@@ -11,11 +11,16 @@ in
   # wrappers use pkgsStatic which has issues on native musl at this time
   security.enableWrappers = pkgs.stdenv.buildPlatform.isGnu;
 
+  xdg.mime.enable = if (pkgs.stdenv.buildPlatform != pkgs.stdenv.hostPlatform) then false else true;
+
   # stub-ld doesn't make sense with musl
   environment.stub-ld.enable = false;
 
   # Fails unless neutered error: expected a set but found null: null
   i18n.glibcLocales = pkgs.runCommand "neutered" { } "mkdir -p $out";
+
+  # Perl stuff just fails too hard these days
+  services.userborn.enable = true;
 
   nixpkgs.overlays = [
     (self: super: {
