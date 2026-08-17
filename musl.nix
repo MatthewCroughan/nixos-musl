@@ -17,23 +17,36 @@ in
   environment.stub-ld.enable = false;
 
   # Fails unless neutered error: expected a set but found null: null
-  i18n.glibcLocales = pkgs.runCommand "neutered" { } "mkdir -p $out";
+#  i18n.glibcLocales = pkgs.runCommand "neutered" { } "mkdir -p $out";
 
   # Perl stuff just fails too hard these days
   services.userborn.enable = true;
 
+#  boot.kernelParams = lib.mkAfter [ "systemd.show_status=true" "systemd.log_target=console" "systemd.journald.forward_to_console=1" ];
+
+  boot.initrd.systemd.emergencyAccess = true;
+
   nixpkgs.overlays = [
     (self: super: {
+
       # qemu doesn't build for musl, and if we want to run the
-      # config.system.build.vm, we need a glibc qemu, doens't impact anything
+      # config.system.build.vm, we need a glibc qemu, doesn't impact anything
       # else
       qemu = glibcPkgs.qemu;
 
       ## But the qemu_test binary is fine on musl
       qemu_test = glibcPkgs.qemu_test;
 
+      jemalloc = super.jemalloc.overrideAttrs { doCheck = false; };
+
+      openssl = super.openssl.overrideAttrs { doCheck = false; };
+
       # Tests are so flaky...
       git = super.git.overrideAttrs { doInstallCheck = false; };
+
+      dbus-broker = super.dbus-broker.overrideAttrs (old: {
+        NIX_CFLAGS_COMPILE = (old.NIX_CFLAGS_COMPILE or "") + " -Wno-error=incompatible-pointer-types";
+      });
 
       # https://github.com/NixOS/nixpkgs/pull/451147
       diffutils = super.diffutils.overrideAttrs (old: {
@@ -54,6 +67,8 @@ in
       };
     })
   ];
+
+#  services.dbus.implementation = "dbus";
 
   # These options sometimes work, and sometimes don't, because of perl
   nix.enable = lib.mkForce false;

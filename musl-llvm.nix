@@ -11,9 +11,27 @@ in
       ## Prevents accidental runtime linkage to llvm bintools
       # gnugrep = super.gnugrep.override { runtimeShellPackage = self.runCommand "neutered" { } "mkdir -p $out"; };
 
-      coreutils = super.coreutils.overrideAttrs {
+      libressl = super.libressl.overrideAttrs (old: {
         doCheck = false;
-      };
+      });
+
+      libapparmor = super.libapparmor.overrideAttrs (old: {
+        postPatch = (old.postPatch or "") + ''
+          sed -i 's/char buff\[total_size\];/char buff[];/' src/kernel.c
+        '';
+      });
+
+
+      #libapparmor = super.libapparmor.overrideAttrs (old: {
+      #  # gnu23 rejects `char buff[total_size];` inside a struct and the
+      #  # externally_visible attribute.  gnu17 keeps the GNU extension and
+      #  # the build stays the same.
+      #  env.NIX_CFLAGS_COMPILE = "-std=gnu17 -Wno-unknown-attributes";
+      #});
+
+      #coreutils = super.coreutils.overrideAttrs {
+      #  doCheck = false;
+      #};
 
       ## https://github.com/NixOS/nixpkgs/pull/445833
       #netbsd = super.netbsd.overrideScope (
